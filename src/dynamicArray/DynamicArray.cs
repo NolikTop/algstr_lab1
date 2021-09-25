@@ -69,31 +69,16 @@ namespace lab.dynamicArray
             _capacity = 2;
         }
 
-        /// <summary>
-        /// Содержит ли массив данный элемент
-        /// </summary>
-        /// <param name="item">элемент</param>
-        /// <returns>true, если элемент найден, и false, если не найден</returns>
         public bool Contains(T item)
         {
             return _internalArray.Contains(item);
         }
 
-        /// <summary>
-        /// Копирует массив в указанный
-        /// </summary>
-        /// <param name="array">массив</param>
-        /// <param name="arrayIndex">индекс, с которого начинать копировать</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
             _internalArray.CopyTo(array, arrayIndex);
         }
         
-        /// <summary>
-        /// Возвращает индекс первого элемента, равного указанному
-        /// </summary>
-        /// <param name="item">элемент</param>
-        /// <returns>индекс элемента, либо -1 если он не найден</returns>
         public int IndexOfFirst(T item)
         {
             for (var i = 0; i < Count; ++i)
@@ -125,10 +110,6 @@ namespace lab.dynamicArray
             return true;
         }
 
-        /// <summary>
-        /// Удаляет элемент по индексу
-        /// </summary>
-        /// <param name="index">индекс элемента</param>
         public void RemoveAt(int index)
         {
             Array.Copy(_internalArray, index + 1, _internalArray, index, _internalArray.Length - index - 1); // сдвигаем массив 
