@@ -10,12 +10,10 @@ namespace algstr_lab1
     {
         static void Main(string[] args)
         {
-            var str = "353 + 4634 / sin(228- 5) * 62 / ( 631 - 5 ) ^ 2 ^ 3";
-
-            var t = Tokens.Parse(str);
-            var res  = string.Join(" ", t);
-            
-            Console.WriteLine(res);
+            var str = "sin ( cos ( 2) / 3 * 4 )";
+            //var str = "3 + 4 * 2 / sin( 1 - 5 ) ^ 2 ^ cos((3))";
+            // 3 4 2 * 1 5 - sin 2 3 cos ^ ^ / + 
+            Console.WriteLine(Infix2PostfixTranslator.Translate(str));
         }
     }
 }

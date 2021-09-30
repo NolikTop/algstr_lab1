@@ -19,11 +19,11 @@ namespace lab.infix2Postfix
             Add(new FunctionToken("sin"));
             Add(new FunctionToken("cos"));
             
-            Add(new OperatorToken('+'));
-            Add(new OperatorToken('-'));
-            Add(new OperatorToken('*'));
-            Add(new OperatorToken('/'));
-            Add(new OperatorToken('^'));
+            Add(new OperatorToken('+', 1));
+            Add(new OperatorToken('-', 1));
+            Add(new OperatorToken('*', 2));
+            Add(new OperatorToken('/', 2));
+            Add(new OperatorToken('^', 3, false));
 
             _inited = true;
         }
@@ -89,9 +89,9 @@ namespace lab.infix2Postfix
                     continue;
                 }
 
-                if (Operators.ContainsKey(e.Current.ToString()))
+                if (Operators.TryGetValue(e.Current.ToString(), out var op))
                 {
-                    t.Add(new OperatorToken(e.Current));
+                    t.Add(op);
 
                     next = e.MoveNext();
                     continue;
@@ -105,7 +105,7 @@ namespace lab.infix2Postfix
                     continue;
                 }
 
-                throw new Exception("Unknown symbol \"" + e.Current + "\"");
+                throw new Exception("Неизвестный символ \"" + e.Current + "\"");
             }
 
             return t;
