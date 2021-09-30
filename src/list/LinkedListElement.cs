@@ -10,10 +10,5 @@ namespace lab.list
             Value = value;
         }
 
-        internal LinkedListElement(T value, LinkedListElement<T> next): this(value)
-        {
-            Next = next;
-        }
-
     }
 }

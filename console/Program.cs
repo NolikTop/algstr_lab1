@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using lab.dynamicArray;
 using lab.list;
 
 namespace algstr_lab1
@@ -7,7 +9,7 @@ namespace algstr_lab1
     {
         static void Main(string[] args)
         {
-            var a = new LinkedList<int>();
+            var a = new DynamicArray<int>();
             Console.WriteLine(a.ToString());
             
             a.Add(228);

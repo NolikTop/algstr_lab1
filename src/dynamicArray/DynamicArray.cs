@@ -34,26 +34,22 @@ namespace lab.dynamicArray
             get => _internalArray[index];
             set
             {
+                if (index >= Count)
+                {
+                    Count = index + 1;
+                }
+                
                 if (index >= Capacity)
                 {
-                    Capacity = Math.Max(index, Capacity * 2);
+                    Capacity = Math.Max(index+1, Capacity * 2);
                 }
                 _internalArray[index] = value;
             }
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return (IEnumerator<T>)_internalArray.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
         public void Add(T item)
         {
+            
             if (Count >= Capacity)
             {
                 Capacity *= 2;
@@ -79,7 +75,7 @@ namespace lab.dynamicArray
             _internalArray.CopyTo(array, arrayIndex);
         }
         
-        public int IndexOfFirst(T item)
+        public int IndexOf(T item)
         {
             for (var i = 0; i < Count; ++i)
             {
@@ -91,14 +87,9 @@ namespace lab.dynamicArray
             return -1;
         }
 
-        /// <summary>
-        /// Удаляет первый элемент
-        /// </summary>
-        /// <param name="item">элемент</param>
-        /// <returns>true, если элемент был удален, и false, если элемент не был найден</returns>
         public bool Remove(T item)
         {
-            var index = IndexOfFirst(item);
+            var index = IndexOf(item);
 
             if (index == -1)
             {
@@ -114,6 +105,33 @@ namespace lab.dynamicArray
         {
             Array.Copy(_internalArray, index + 1, _internalArray, index, _internalArray.Length - index - 1); // сдвигаем массив 
             Count--;
+        }
+        
+        public override string ToString()
+        {
+            var r = $"[Count={Count}, Capacity={Capacity}]<";
+            if (Count == 0)
+            {
+                r += "Empty dynamic array";
+            }
+            else
+            {
+                r += string.Join(",", this);
+            }
+
+            r += ">";
+
+            return r;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new DynamicArrayEnumerator<T>(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

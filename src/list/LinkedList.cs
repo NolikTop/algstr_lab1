@@ -6,29 +6,30 @@ namespace lab.list
 {
     public class LinkedList<T> : IList<T>
     {
-        public LinkedListElement<T>? FirstElement = null;
+        internal LinkedListElement<T>? FirstElement = null;
 
-        public T First => FirstElement!.Value;
-        public T Last => LastElement()!.Value;
+        public T First => NotNullOrIndexOutOfRange(FirstElement).Value;
+        public T Last => NotNullOrIndexOutOfRange(LastElement()).Value;
         
-        public IEnumerator<T> GetEnumerator()
+        public int Count
         {
-            return new LinkedListEnumerator<T>(this);
+            get
+            {
+                var count = 0;
+                for (var it = FirstElement; it != null; it = it.Next, count++) { }
+
+                return count;
+            }
         }
+        
+        public bool IsEmpty => Count == 0;
 
-        IEnumerator IEnumerable.GetEnumerator()
+        public bool IsReadOnly => false;
+        
+        public T this[int index]
         {
-            return GetEnumerator();
-        }
-
-        public LinkedListElement<T>? LastElement()
-        {
-            var it = FirstElement;
-            if (it == null) return null;
-
-            for (; it.Next != null; it = it.Next) {}
-
-            return it;
+            get => ElementAt(index).Value;
+            set => ElementAt(index).Value = value;
         }
 
         public void Add(T item)
@@ -46,7 +47,7 @@ namespace lab.list
 
         public void Clear()
         {
-            FirstElement = null; // пофиг, GC их всех съест
+            FirstElement = null;
         }
 
         public bool Contains(T item)
@@ -56,7 +57,12 @@ namespace lab.list
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new System.NotImplementedException(); // зачем?
+            var it = ElementAt(arrayIndex);
+
+            for (var i = 0; it != null && i < array.Length; it = it.Next)
+            {
+                array[i] = it.Value;
+            }
         }
 
         public bool Remove(T item)
@@ -79,19 +85,6 @@ namespace lab.list
             return false;
         }
 
-        public int Count
-        {
-            get
-            {
-                var count = 0;
-                for (var it = FirstElement; it != null; it = it.Next, count++) { }
-
-                return count;
-            }
-        }
-
-        public bool IsReadOnly => false;
-
         public int IndexOf(T item)
         {
             var i = 0;
@@ -112,8 +105,6 @@ namespace lab.list
         {
             switch (index)
             {
-                case < 0:
-                    throw new IndexOutOfRangeException();
                 case 0:
                     FirstElement = FirstElement?.Next;
                     return; 
@@ -134,38 +125,6 @@ namespace lab.list
             throw new IndexOutOfRangeException();
         }
 
-        public T this[int index]
-        {
-            get
-            {
-                var i = 0;
-                    
-                for (var it = FirstElement; it != null; it = it.Next, i++)
-                {
-                    if (i != index) continue;
-                    
-                    return it.Value;
-                }
-
-                throw new IndexOutOfRangeException();
-            }
-            set
-            {
-                var i = 0;
-                    
-                for (var it = FirstElement; it != null; it = it.Next, i++)
-                {
-                    if (i != index) continue;
-
-                    it.Value = value;
-                    return;
-                }
-                
-                throw new IndexOutOfRangeException();
-            }
-            
-        }
-
         public override string ToString()
         {
             if (FirstElement == null)
@@ -183,6 +142,55 @@ namespace lab.list
             r += ">";
 
             return r;
+        }
+
+        private LinkedListElement<T> ElementAt(int index)
+        {
+            if (index < 0)
+            {
+                throw new IndexOutOfRangeException();
+            }
+            
+            var i = 0;
+
+            for (var it = FirstElement; it != null; it = it.Next, i++)
+            {
+                if (i != index) continue;
+
+                return it;
+            }
+
+            throw new IndexOutOfRangeException();
+        }
+        
+        private LinkedListElement<T>? LastElement()
+        {
+            var it = FirstElement;
+            if (it == null) return null;
+
+            for (; it.Next != null; it = it.Next) {}
+
+            return it;
+        }
+
+        private static LinkedListElement<T> NotNullOrIndexOutOfRange(LinkedListElement<T>? element)
+        {
+            if (element is null)
+            {
+                throw new IndexOutOfRangeException();
+            }
+
+            return element;
+        }
+        
+        public IEnumerator<T> GetEnumerator()
+        {
+            return new LinkedListEnumerator<T>(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
