@@ -22,7 +22,7 @@ namespace lab.list
             }
         }
         
-        public bool IsEmpty => Count == 0;
+        public bool IsEmpty => FirstElement == null;
 
         public bool IsReadOnly => false;
         
@@ -131,17 +131,7 @@ namespace lab.list
             {
                 return "<Empty list>";
             }
-            
-            var r = "<" + FirstElement.Value;
-            
-            for (var it = FirstElement.Next; it != null; it = it.Next)
-            {
-                r += "->" + it.Value;
-            }
-
-            r += ">";
-
-            return r;
+            return "<" + string.Join("->", this) + ">";
         }
 
         private LinkedListElement<T> ElementAt(int index)

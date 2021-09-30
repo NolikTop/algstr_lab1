@@ -9,8 +9,16 @@ namespace lab.list
     {
         private LinkedListElement<T>? _current;
 
-        public T Current => _current!.Value;
-        
+        public T Current
+        {
+            get
+            {
+                var c = _current!;
+                _current = _current?.Next;
+                return c.Value;
+            }
+        }
+
         public LinkedListEnumerator(LinkedList<T> list)
         {
             if (list.FirstElement != null)
@@ -21,8 +29,6 @@ namespace lab.list
 
         public bool MoveNext()
         {
-            _current = _current?.Next;
-            
             return _current != null;
         }
 

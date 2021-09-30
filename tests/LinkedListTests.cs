@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace tests
 {
-    public class Tests
+    public class LinkedListTests
     {
         private LinkedList<int> _list;
 
@@ -27,18 +27,18 @@ namespace tests
         {
             _list.Clear();
             
-            Assert.AreEqual(0, _list.Count);
+            Assert.AreEqual("<Empty list>", _list.ToString());
             
             _list.Add(10);
-            Assert.AreEqual(1, _list.Count);
+            Assert.AreEqual("<10>", _list.ToString());
             
             _list.Add(20);
-            Assert.AreEqual(2, _list.Count);
+            Assert.AreEqual("<10->20>", _list.ToString());
             
             _list.Add(30);
-            Assert.AreEqual(3, _list.Count);
+            Assert.AreEqual("<10->20->30>", _list.ToString());
 
-            Assert.AreEqual(_list.ToString(), "<10->20->30>");
+            Assert.AreEqual("<10->20->30>", _list.ToString());
 
             Assert.Pass();
         }

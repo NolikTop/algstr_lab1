@@ -73,9 +73,7 @@ namespace tests
         [Test]
         public void Remove()
         {
-            Console.WriteLine(_array.ToString());
             _array.Remove(20);
-            Console.WriteLine(_array.ToString());
             
             Assert.AreEqual("[Count=3, Capacity=4]<10,30,40>", _array.ToString());
         }
