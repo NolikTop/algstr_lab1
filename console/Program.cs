@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using lab.dynamicArray;
+using lab.infix2Postfix;
 using lab.list;
 
 namespace algstr_lab1
@@ -9,17 +10,12 @@ namespace algstr_lab1
     {
         static void Main(string[] args)
         {
-            var a = new DynamicArray<int>();
-            Console.WriteLine(a.ToString());
+            var str = "353 + 4634 / sin(228- 5) * 62 / ( 631 - 5 ) ^ 2 ^ 3";
+
+            var t = Tokens.Parse(str);
+            var res  = string.Join(" ", t);
             
-            a.Add(228);
-            Console.WriteLine(a.ToString());
-            
-            a.Add(990);
-            Console.WriteLine(a.ToString());
-            
-            a.Remove(228);
-            Console.WriteLine(a.ToString());
+            Console.WriteLine(res);
         }
     }
 }
